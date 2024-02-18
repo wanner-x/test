@@ -1,0 +1,7 @@
+version: 1
+updates:
+  - package-ecosystem: "npm" # 选择你的项目依赖环境，如 npm, maven, pip 等
+    directory: "/" # 项目根目录
+    schedule:
+      interval: "daily" # 更新检查的频率：daily, weekly, monthly
+    open-pull-requests-limit: 2 # 同时打开的 PR 数量限制
