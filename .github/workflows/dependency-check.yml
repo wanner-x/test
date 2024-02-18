@@ -1,0 +1,37 @@
+name: OWASP Dependency Check for npm dependencies
+
+on: [push]
+
+jobs:
+  dependency-check:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '21' # 选择适合你项目的 Node.js 版本
+
+    - name: Install Dependencies
+      run: npm install
+      
+    - name: Run OWASP Dependency-Check
+      uses: DependencyTrack/dependency-check-action@v3
+      with:
+        # 设置项目的路径，如果你的项目不在根目录下，需要修改这里
+        path: '.'
+        # 设置报告格式，可以是 HTML, XML, CSV, JSON, JUNIT 等
+        format: 'HTML'
+        # 设置报告的输出路径
+        outputDirectory: 'dependency-check-report'
+        # 指定扫描的依赖文件
+        args: '--scan ./package.json --scan ./package-lock.json --failOnCVSS 7 --enableExperimental'
+        
+    - name: Upload Dependency-Check report
+      uses: actions/upload-artifact@v2
+      with:
+        name: dependency-check-report
+        path: dependency-check-report
